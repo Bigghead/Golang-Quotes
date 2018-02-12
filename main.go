@@ -30,6 +30,7 @@ func main() {
 
 	fmt.Println(getRandom(len(quotes)))
 	router.HandleFunc("/", getQuote)
+	router.HandleFunc("/quote", getSingle)
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
@@ -41,4 +42,10 @@ func getRandom(length int) int {
 func getQuote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	json.NewEncoder(w).Encode(quotes)
+}
+
+func getSingle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	index := getRandom(len(quotes))
+	json.NewEncoder(w).Encode(quotes[index])
 }
