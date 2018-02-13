@@ -19,6 +19,7 @@ func main() {
 	router := mux.NewRouter()
 
 	seedQuotes()
+	getSimpsonsQuote()
 
 	router.HandleFunc("/", getQuote)
 	router.HandleFunc("/quote", getSingle)
