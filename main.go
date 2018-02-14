@@ -1,25 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-type Quotes struct {
+type quotes struct {
 	Quote  string `json:"quote"`
 	Author string `json:"author"`
 }
 
-var quotes []Quotes
+var quote []quotes
 
 func main() {
 
 	router := mux.NewRouter()
 
 	seedQuotes()
-	getSimpsonsQuote()
+	simpsonsQuote := getSimpsonsQuote()
+	fmt.Println(simpsonsQuote)
 
 	router.HandleFunc("/", getQuote)
 	router.HandleFunc("/quote", getSingle)
