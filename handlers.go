@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -14,7 +15,7 @@ type simpsonsQuote struct {
 	Quote              string `json:"quote"`
 	Character          string `json:"character"`
 	Image              string `json:"image"`
-	CharacterDirection string `json:"direction"`
+	CharacterDirection string `json:"characterDirection"`
 }
 
 func seedQuotes() {
@@ -54,9 +55,12 @@ func getSimpsonsQuote() {
 			os.Exit(1)
 		}
 
-		fmt.Printf("%s\n", string(contents))
-		// fmt.Printf("%s",)
-		// fmt.Println(json.NewDecoder(response.Body).Decode(&data))
-		// return json.NewDecoder(response.Body).Decode(&data)
+		// data := []simpsonsQuote{}
+		data := []map[string]string{}
+		error := json.Unmarshal(contents, &data)
+		if error != nil {
+			log.Fatal(error)
+		}
+		fmt.Println(data[0]["quote"])
 	}
 }
