@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -40,11 +41,12 @@ func getSingle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	index := getRandom(len(quote))
 
-	data := &quote[index].Quote
+	data := &quote[index]
+	data.getFirstQuote()
 	simpsonsQuote := getSimpsonsQuote()
-	(*data) += simpsonsQuote[0]["quote"]
-
-	json.NewEncoder(w).Encode(quote[index])
+	combineQuotes := data.combineQuote(simpsonsQuote[0])
+	// (*data) += simpsonsQuote[0]["quote"]
+	json.NewEncoder(w).Encode(combineQuotes)
 }
 
 func getSimpsonsQuote() []map[string]string {
@@ -69,4 +71,21 @@ func getSimpsonsQuote() []map[string]string {
 	}
 	// fmt.Println(data[0]["quote"])
 	return data
+}
+
+func (q *quotes) getFirstQuote() {
+	quoteSlice := strings.Split((*q).Quote, " +")
+	(*q).Quote = quoteSlice[0]
+
+	authorSlice := strings.Split((*q).Author, " +")
+	(*q).Author = authorSlice[0]
+
+}
+
+func (q *quotes) combineQuote(simpsons map[string]string) quotes {
+	// s := &simpsons
+	fmt.Println((*q).Quote)
+	(*q).Quote += " + " + (simpsons)["quote"]
+	(*q).Author += " + " + (simpsons)["character"]
+	return *q
 }

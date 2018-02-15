@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -20,8 +19,6 @@ func main() {
 	router := mux.NewRouter()
 
 	seedQuotes()
-	simpsonsQuote := getSimpsonsQuote()
-	fmt.Println(simpsonsQuote)
 
 	router.HandleFunc("/", getQuote)
 	router.HandleFunc("/quote", getSingle)
